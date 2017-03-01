@@ -1,0 +1,39 @@
+cache: apt
+sudo: true
+language: python
+python:
+  - "2.7"
+addons:
+  apt:
+    packages:
+    - libblas-dev
+    - liblapack-dev
+    - gfortran
+
+before_install:
+#  - sudo apt-get update
+  - git clone https://github.com/aaron-parsons/repo4data.git ../repo4data
+  - wget https://repo.continuum.io/miniconda/Miniconda2-latest-Linux-x86_64.sh -O miniconda.sh;
+  - bash miniconda.sh -b -p $HOME/miniconda
+  - export PATH="$HOME/miniconda/bin:$PATH"
+  - hash -r
+  - conda config --set always_yes yes --set changeps1 no
+  - conda update -q conda
+  - conda info -a
+  - conda list
+  - conda install pyyaml
+  - conda list
+  - ls
+  - pwd
+  - ls ..
+
+install:
+  - conda env create --file environment.yml
+  - source activate test-environment 
+
+script:
+  - py.test tests/ -v --cov repoNoData --cov-report term-missing
+
+after_script:
+  - coveralls
+
