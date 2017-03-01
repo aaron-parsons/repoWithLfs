@@ -1,2 +1,2 @@
--[lfs]
--	fetchexclude = test_data
+[lfs]
+	fetchexclude = test_data
